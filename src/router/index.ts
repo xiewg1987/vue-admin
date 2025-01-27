@@ -1,17 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue';
-import About from '../views/About.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/login' // 重定向到login
   },
   {
-    path: '/about',
-    name: 'About',
-    component: About
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/index.vue')
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import('@/views/home.vue')
+  },
+  {
+    path: '/:catchAll(.*)', // 404页面
+    meta: { closeTab: true },
+    component: () => import('@/views/not-found/index.vue')
   }
 ];
 
