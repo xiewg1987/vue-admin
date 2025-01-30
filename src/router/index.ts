@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { Menus } from './views';
 
 const routes = [
   {
@@ -13,7 +14,8 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: () => import('@/views/home.vue')
+    children: Menus,
+    component: () => import('@/views/home/home.vue')
   },
   {
     path: '/:catchAll(.*)', // 404页面
@@ -22,9 +24,19 @@ const routes = [
   }
 ];
 
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
+});
+
+// 路由守卫
+router.beforeEach((to, _, next) => {
+  if (to.path !== '/login' && !localStorage.getItem('token')) {
+    return next('/login');
+  }
+  next();
 });
 
 export default router;
